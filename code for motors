@@ -1,0 +1,85 @@
+import RPi.GPIO as GPIO
+import time
+
+# Set the GPIO mode to BCM
+GPIO.setmode(GPIO.BCM)
+
+# Define the pins for motor 1
+motor1_pin1 = 17
+motor1_pin2 = 18
+motor1_en = 23
+
+# Define the pins for motor 2
+motor2_pin1 = 27
+motor2_pin2 = 22
+motor2_en = 24
+
+# Set the motor pins as output
+GPIO.setup(motor1_pin1, GPIO.OUT)
+GPIO.setup(motor1_pin2, GPIO.OUT)
+GPIO.setup(motor1_en, GPIO.OUT)
+
+GPIO.setup(motor2_pin1, GPIO.OUT)
+GPIO.setup(motor2_pin2, GPIO.OUT)
+GPIO.setup(motor2_en, GPIO.OUT)
+
+# Create a PWM object for each motor
+motor1_pwm = GPIO.PWM(motor1_en, 100)
+motor2_pwm = GPIO.PWM(motor2_en, 100)
+
+# Start the PWM with a duty cycle of 0%
+motor1_pwm.start(0)
+motor2_pwm.start(0)
+
+# Define a function to move motor 1 forward
+def motor1_forward():
+    GPIO.output(motor1_pin1, GPIO.HIGH)
+    GPIO.output(motor1_pin2, GPIO.LOW)
+    motor1_pwm.ChangeDutyCycle(50)
+
+# Define a function to move motor 1 backward
+def motor1_backward():
+    GPIO.output(motor1_pin1, GPIO.LOW)
+    GPIO.output(motor1_pin2, GPIO.HIGH)
+    motor1_pwm.ChangeDutyCycle(50)
+
+# Define a function to stop motor 1
+def motor1_stop():
+    GPIO.output(motor1_pin1, GPIO.LOW)
+    GPIO.output(motor1_pin2, GPIO.LOW)
+    motor1_pwm.ChangeDutyCycle(0)
+
+# Define a function to move motor 2 forward
+def motor2_forward():
+    GPIO.output(motor2_pin1, GPIO.HIGH)
+    GPIO.output(motor2_pin2, GPIO.LOW)
+    motor2_pwm.ChangeDutyCycle(50)
+
+# Define a function to move motor 2 backward
+def motor2_backward():
+    GPIO.output(motor2_pin1, GPIO.LOW)
+    GPIO.output(motor2_pin2, GPIO.HIGH)
+    motor2_pwm.ChangeDutyCycle(50)
+
+# Define a function to stop motor 2
+def motor2_stop():
+    GPIO.output(motor2_pin1, GPIO.LOW)
+    GPIO.output(motor2_pin2, GPIO.LOW)
+    motor2_pwm.ChangeDutyCycle(0)
+
+# Move both motors forward for 1 second
+motor1_forward()
+motor2_forward()
+time.sleep(1)
+motor1_stop()
+motor2_stop()
+
+# Move both motors backward for 1 second
+motor1_backward()
+motor2_backward()
+time.sleep(1)
+motor1_stop()
+motor2_stop()
+
+# Clean up the GPIO pins
+GPIO.cleanup()
